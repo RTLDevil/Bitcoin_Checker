@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Price Checker</title>
+    <script>
+        // Function to fetch Bitcoin price and update the HTML
+        async function fetchBitcoinPrice() {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+            const data = await response.json();
+            const btcPrice = data.bitcoin.usd;
+            document.getElementById('btcPrice').value = btcPrice;
+            calculateBTC();
+        }
+
+        // Function to calculate the amount of Bitcoin from USD input
+        function calculateBTC() {
+            const btcPrice = document.getElementById('btcPrice').value;
+            const usdAmount = document.getElementById('usdAmount').value;
+            const btcAmount = usdAmount / btcPrice;
+            document.getElementById('btcAmount').value = btcAmount.toFixed(8);
+        }
+    </script>
+</head>
+<body onload="fetchBitcoinPrice()">
+    <h1>Bitcoin Price Checker</h1>
+    <div>
+        <label for="btcPrice">Current BTC Price (USD):</label>
+        <input type="number" id="btcPrice" disabled>
+    </div>
+    <div>
+        <label for="usdAmount">USD Amount:</label>
+        <input type="number" id="usdAmount" oninput="calculateBTC()">
+    </div>
+    <div>
+        <label for="btcAmount">BTC Amount:</label>
+        <input type="text" id="btcAmount" disabled>
+    </div>
+</body>
+</html>
